@@ -12,20 +12,28 @@ const options = [
 ];
 
 const Wrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
-	@media(min-width: 767px) {
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
-`
+  @media (min-width: 767px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+`;
 
-export const Controls = () => {
+export const Controls = ({ onSearch }) => {
   const [search, setSearch] = useState('');
   const [region, setRegion] = useState('');
+
+  useEffect(() => {
+    const regionValue = region?.value || '';
+		onSearch(search, regionValue);
+		
+    //eslint-disable-next-line
+		//отключение линтера, если происходит подчеркивание нижней строки, код корректен
+  }, [search, region]);
 
   return (
     <Wrapper>
@@ -34,9 +42,9 @@ export const Controls = () => {
         options={options}
         placeholder="Filter by Region"
         isClearable
-				isSearchable={false}
-				value={region}
-				onChange={setRegion}
+        isSearchable={false}
+        value={region}
+        onChange={setRegion}
       />
     </Wrapper>
   );
